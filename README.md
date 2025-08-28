@@ -1,36 +1,225 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 JobBoost - CV & Coaching de carrière
 
-## Getting Started
+JobBoost est une application web moderne qui aide les chercheurs d'emploi et les personnes en reconversion à se démarquer rapidement grâce à un générateur de CV optimisé ATS et des outils de coaching intégrés.
 
-First, run the development server:
+## ✨ Fonctionnalités principales
 
+### 🎯 Générateur de CV
+- **Templates modernes** : 4 modèles professionnels (2 gratuits, 2 premium)
+- **Optimisation ATS** : Score automatique et suggestions de mots-clés
+- **Prévisualisation en temps réel** : Voir les changements instantanément
+- **Export PDF** : Génération de PDF haute qualité
+
+### 📝 Lettres de motivation
+- **Génération automatique** : Basée sur l'offre d'emploi et votre CV
+- **Templates personnalisables** : Adaptés à chaque type de poste
+- **Variables dynamiques** : Remplissage automatique des informations
+
+### 📊 Suivi de candidatures
+- **Mini-ATS personnel** : Suivez toutes vos candidatures
+- **Alertes intelligentes** : Rappels pour les relances
+- **Statistiques** : Analyse de vos performances
+
+### 🎓 Coaching intégré
+- **Micro-formations** : Capsules de 5 minutes sur la recherche d'emploi
+- **Conseils personnalisés** : Basés sur votre profil et objectifs
+- **Notifications motivantes** : Restez motivé dans votre recherche
+
+## 🛠️ Stack technique
+
+- **Frontend** : Next.js 14 + React + TypeScript
+- **Styling** : Tailwind CSS
+- **Base de données** : PostgreSQL + Prisma ORM
+- **Authentification** : NextAuth.js
+- **Génération PDF** : Puppeteer
+- **Templates** : Handlebars
+- **Déploiement** : Vercel (recommandé)
+
+## 🚀 Installation et démarrage
+
+### Prérequis
+- Node.js 18+ 
+- PostgreSQL
+- npm ou yarn
+
+### 1. Cloner le projet
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/votre-username/job-boost.git
+cd job-boost
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Installer les dépendances
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Configuration de l'environnement
+Créez un fichier `.env.local` à la racine du projet :
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/jobboost"
 
-## Learn More
+# NextAuth
+NEXTAUTH_SECRET="your-secret-key-here"
+NEXTAUTH_URL="http://localhost:3000"
 
-To learn more about Next.js, take a look at the following resources:
+# Google OAuth (optionnel)
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Stripe (pour plus tard)
+STRIPE_SECRET_KEY=""
+STRIPE_PUBLISHABLE_KEY=""
+STRIPE_WEBHOOK_SECRET=""
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Configuration de la base de données
+```bash
+# Générer le client Prisma
+npx prisma generate
 
-## Deploy on Vercel
+# Créer et migrer la base de données
+npx prisma db push
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# (Optionnel) Ouvrir Prisma Studio
+npx prisma studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Lancer l'application
+```bash
+npm run dev
+```
+
+L'application sera accessible sur [http://localhost:3000](http://localhost:3000)
+
+## 📁 Structure du projet
+
+```
+src/
+├── app/                    # App Router Next.js
+│   ├── resume/            # Générateur de CV
+│   ├── cover-letters/     # Générateur de lettres
+│   ├── applications/      # Suivi des candidatures
+│   └── auth/              # Authentification
+├── components/            # Composants React
+│   ├── layout/           # Composants de mise en page
+│   ├── resume/           # Composants du générateur CV
+│   └── ui/               # Composants UI réutilisables
+├── lib/                  # Utilitaires et fonctions
+├── types/                # Types TypeScript
+└── styles/               # Styles globaux
+```
+
+## 🎨 Templates de CV disponibles
+
+### Gratuits
+1. **Moderne** : Design épuré et professionnel
+2. **Classique** : Style traditionnel et élégant
+
+### Premium
+3. **Créatif** : Design original et impactant
+4. **Minimaliste** : Simplicité et efficacité
+
+## 💰 Modèle économique
+
+### Plan Gratuit
+- 1 modèle de CV basique
+- 1 lettre de motivation
+- Export PDF avec filigrane
+- Suivi simple des candidatures
+
+### Plan Premium (7,99€/mois)
+- Tous les modèles premium
+- Exports PDF illimités
+- Score ATS avancé
+- Sauvegardes multiples
+- Analyses détaillées
+
+## 🔧 Développement
+
+### Scripts disponibles
+```bash
+npm run dev          # Développement local
+npm run build        # Build de production
+npm run start        # Démarrer en production
+npm run lint         # Vérification du code
+npm run type-check   # Vérification des types
+```
+
+### Conventions de code
+- **TypeScript strict** : Configuration stricte activée
+- **ESLint + Prettier** : Formatage automatique du code
+- **Composants fonctionnels** : Utilisation des hooks React
+- **Tailwind CSS** : Classes utilitaires pour le styling
+
+## 🚀 Déploiement
+
+### Vercel (recommandé)
+1. Connectez votre repository GitHub à Vercel
+2. Configurez les variables d'environnement
+3. Déployez automatiquement à chaque push
+
+### Variables d'environnement de production
+```env
+DATABASE_URL="your-production-database-url"
+NEXTAUTH_SECRET="your-production-secret"
+NEXTAUTH_URL="https://your-domain.com"
+```
+
+## 📈 Roadmap
+
+### Sprint 1 - MVP CV ✅
+- [x] Modèle de données
+- [x] Éditeur de CV
+- [x] 3 templates
+- [x] Export PDF
+- [x] Interface utilisateur
+
+### Sprint 2 - Lettres de motivation
+- [ ] 2 templates de lettres
+- [ ] Variables dynamiques
+- [ ] Export et sauvegarde
+
+### Sprint 3 - Analyse ATS
+- [ ] Parsing des offres d'emploi
+- [ ] Suggestions de mots-clés
+- [ ] Score ATS
+- [ ] Interface de comparaison
+
+### Sprint 4 - Paiement et Premium
+- [ ] Intégration Stripe
+- [ ] Limites free/premium
+- [ ] Analyses d'usage
+- [ ] Micro-correctifs
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! Voici comment contribuer :
+
+1. Fork le projet
+2. Créez une branche pour votre fonctionnalité
+3. Committez vos changements
+4. Poussez vers la branche
+5. Ouvrez une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 📞 Support
+
+- **Email** : support@jobboost.com
+- **Documentation** : [docs.jobboost.com](https://docs.jobboost.com)
+- **Issues** : [GitHub Issues](https://github.com/votre-username/job-boost/issues)
+
+## 🙏 Remerciements
+
+- [Next.js](https://nextjs.org/) pour le framework
+- [Tailwind CSS](https://tailwindcss.com/) pour le styling
+- [Prisma](https://www.prisma.io/) pour l'ORM
+- [Heroicons](https://heroicons.com/) pour les icônes
+
+---
+
+**JobBoost** - Transformez votre carrière en quelques clics ! 🚀
