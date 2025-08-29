@@ -1,0 +1,30 @@
+<svg width="200" height="280" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="280" fill="#ffffff" stroke="#374151" stroke-width="3" />
+
+    <!-- Header classique -->
+    <rect x="0" y="0" width="200" height="50" fill="#374151" />
+    <text x="100" y="30" text-anchor="middle" fill="white" font-family="Times New Roman" font-size="16"
+        font-weight="bold">CLASSIQUE</text>
+
+    <!-- Section expérience -->
+    <rect x="20" y="70" width="160" height="2" fill="#374151" />
+    <text x="20" y="85" fill="#374151" font-family="Times New Roman" font-size="12" font-weight="bold">EXPÉRIENCE
+        PROFESSIONNELLE</text>
+
+    <rect x="20" y="95" width="160" height="25" fill="#ffffff" stroke="#d1d5db" />
+    <rect x="20" y="125" width="160" height="25" fill="#ffffff" stroke="#d1d5db" />
+
+    <!-- Section formation -->
+    <rect x="20" y="165" width="160" height="2" fill="#374151" />
+    <text x="20" y="180" fill="#374151" font-family="Times New Roman" font-size="12" font-weight="bold">FORMATION</text>
+
+    <rect x="20" y="190" width="160" height="25" fill="#ffffff" stroke="#d1d5db" />
+
+    <!-- Section compétences -->
+    <rect x="20" y="230" width="160" height="2" fill="#374151" />
+    <text x="20" y="245" fill="#374151" font-family="Times New Roman" font-size="12"
+        font-weight="bold">COMPÉTENCES</text>
+
+    <text x="20" y="265" fill="#374151" font-family="Times New Roman" font-size="10">• Compétence 1 • Compétence 2 •
+        Compétence 3</text>
+</svg>

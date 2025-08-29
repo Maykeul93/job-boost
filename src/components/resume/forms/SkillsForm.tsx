@@ -109,133 +109,135 @@ export default function SkillsForm({ data, onChange }: SkillsFormProps) {
                             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
                         >
                             <PlusIcon className="w-4 h-4" />
-                            Ajouter une compétence
+                            Ajouter ma première compétence
                         </button>
                     </div>
                 </div>
             ) : (
-                <div className="space-y-6">
-                    {data.map((skill, skillIndex) => (
+                <div className="space-y-4">
+                    {data.map((skill, index) => (
                         <div
-                            key={skillIndex}
-                            className="bg-gray-50 rounded-lg p-6 border border-gray-200"
+                            key={index}
+                            className="bg-white rounded-lg border border-gray-200 p-4"
                         >
                             <div className="flex items-start justify-between mb-4">
-                                <h4 className="text-md font-medium text-gray-900">
-                                    Compétence {skillIndex + 1}
-                                </h4>
-                                <button
-                                    type="button"
-                                    onClick={() => removeSkill(skillIndex)}
-                                    className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                                >
-                                    <TrashIcon className="w-4 h-4" />
-                                </button>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Nom de la compétence *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={skill.name}
-                                        onChange={(e) =>
-                                            updateSkill(
-                                                skillIndex,
-                                                "name",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="ex: JavaScript, Gestion de projet..."
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Niveau *
-                                    </label>
-                                    <select
-                                        value={skill.level}
-                                        onChange={(e) =>
-                                            updateSkill(
-                                                skillIndex,
-                                                "level",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        {skillLevels.map((level) => (
-                                            <option
-                                                key={level.value}
-                                                value={level.value}
-                                            >
-                                                {level.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-
-                            {/* Keywords */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Mots-clés associés
-                                </label>
-                                <div className="space-y-2">
-                                    <div className="flex flex-wrap gap-2">
-                                        {skill.keywords.map(
-                                            (keyword, keywordIndex) => (
-                                                <span
-                                                    key={keywordIndex}
-                                                    className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                                                >
-                                                    {keyword}
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            removeKeyword(
-                                                                skillIndex,
-                                                                keywordIndex
-                                                            )
-                                                        }
-                                                        className="text-blue-600 hover:text-blue-800"
-                                                    >
-                                                        <XMarkIcon className="w-3 h-3" />
-                                                    </button>
-                                                </span>
-                                            )
-                                        )}
-                                    </div>
-
-                                    <div className="flex gap-2">
+                                <div className="flex-1 space-y-3">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Nom de la compétence
+                                        </label>
                                         <input
                                             type="text"
-                                            value={newKeyword}
+                                            value={skill.name}
                                             onChange={(e) =>
-                                                setNewKeyword(e.target.value)
+                                                updateSkill(
+                                                    index,
+                                                    "name",
+                                                    e.target.value
+                                                )
                                             }
-                                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Ajouter un mot-clé associé"
-                                            onKeyPress={(e) =>
-                                                e.key === "Enter" &&
-                                                addKeyword(skillIndex)
-                                            }
+                                            placeholder="Ex: JavaScript, Gestion de projet, Leadership"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                addKeyword(skillIndex)
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Niveau
+                                        </label>
+                                        <select
+                                            value={skill.level}
+                                            onChange={(e) =>
+                                                updateSkill(
+                                                    index,
+                                                    "level",
+                                                    e.target.value as
+                                                        | "BEGINNER"
+                                                        | "INTERMEDIATE"
+                                                        | "ADVANCED"
+                                                        | "EXPERT"
+                                                )
                                             }
-                                            className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         >
-                                            <PlusIcon className="w-4 h-4" />
-                                        </button>
+                                            {skillLevels.map((level) => (
+                                                <option
+                                                    key={level.value}
+                                                    value={level.value}
+                                                >
+                                                    {level.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Mots-clés associés
+                                        </label>
+                                        <div className="flex gap-2 mb-2">
+                                            <input
+                                                type="text"
+                                                value={newKeyword}
+                                                onChange={(e) =>
+                                                    setNewKeyword(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="Ajouter un mot-clé"
+                                                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                onKeyPress={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        addKeyword(index);
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    addKeyword(index)
+                                                }
+                                                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                            >
+                                                <PlusIcon className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                        {skill.keywords.length > 0 && (
+                                            <div className="flex flex-wrap gap-2">
+                                                {skill.keywords.map(
+                                                    (keyword, keywordIndex) => (
+                                                        <span
+                                                            key={keywordIndex}
+                                                            className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                                                        >
+                                                            {keyword}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    removeKeyword(
+                                                                        index,
+                                                                        keywordIndex
+                                                                    )
+                                                                }
+                                                                className="text-blue-600 hover:text-blue-800"
+                                                            >
+                                                                <XMarkIcon className="w-3 h-3" />
+                                                            </button>
+                                                        </span>
+                                                    )
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => removeSkill(index)}
+                                    className="ml-4 p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md transition-colors"
+                                >
+                                    <TrashIcon className="w-5 h-5" />
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -306,6 +308,18 @@ export default function SkillsForm({ data, onChange }: SkillsFormProps) {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Message de fin */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                <h3 className="text-sm font-medium text-green-800 mb-2">
+                    🎉 Félicitations !
+                </h3>
+                <p className="text-sm text-green-700">
+                    Vous avez terminé la création de votre CV. Utilisez les
+                    boutons ci-dessous pour sauvegarder ou exporter votre
+                    document.
+                </p>
             </div>
         </div>
     );
