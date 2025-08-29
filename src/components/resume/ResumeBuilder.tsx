@@ -17,6 +17,7 @@ import BasicsForm from "./forms/BasicsForm";
 import ExperienceForm from "./forms/ExperienceForm";
 import EducationForm from "./forms/EducationForm";
 import SkillsForm from "./forms/SkillsForm";
+import PDFExporter from "./PDFExporter";
 
 interface ResumeBuilderProps {
     data: ResumeData;
@@ -220,164 +221,10 @@ export default function ResumeBuilder({
                                 Sauvegarder
                             </button>
 
-                            <button
-                                onClick={() => {
-                                    // Export PDF simple avec print
-                                    const printWindow = window.open(
-                                        "",
-                                        "_blank"
-                                    );
-                                    if (printWindow) {
-                                        const html = `
-                                             <html>
-                                                 <head>
-                                                     <title>CV - ${
-                                                         data.basics.firstName
-                                                     } ${
-                                            data.basics.lastName
-                                        }</title>
-                                                     <style>
-                                                         body { font-family: Arial, sans-serif; margin: 20px; }
-                                                         .header { background: linear-gradient(45deg, #3b82f6, #8b5cf6); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-                                                         .section { margin-bottom: 20px; }
-                                                         .section h2 { border-bottom: 2px solid #3b82f6; padding-bottom: 5px; color: #1f2937; }
-                                                         .experience-item { border-left: 4px solid #3b82f6; padding-left: 15px; margin-bottom: 15px; }
-                                                         .skill-tag { display: inline-block; background: #dbeafe; color: #1e40af; padding: 5px 10px; border-radius: 15px; margin: 2px; font-size: 14px; }
-                                                     </style>
-                                                 </head>
-                                                 <body>
-                                                     <div class="header">
-                                                         <h1>${
-                                                             data.basics
-                                                                 .firstName
-                                                         } ${
-                                            data.basics.lastName
-                                        }</h1>
-                                                         <p style="font-size: 18px; margin: 5px 0;">${
-                                                             data.basics
-                                                                 .title ||
-                                                             "Titre du poste"
-                                                         }</p>
-                                                         <p>${
-                                                             data.basics
-                                                                 .contacts
-                                                                 .email ||
-                                                             "email@example.com"
-                                                         }</p>
-                                                         ${
-                                                             data.basics
-                                                                 .contacts.phone
-                                                                 ? `<p>${data.basics.contacts.phone}</p>`
-                                                                 : ""
-                                                         }
-                                                     </div>
-                                                     
-                                                     ${
-                                                         data.basics.summary
-                                                             ? `
-                                                         <div class="section">
-                                                             <h2>Résumé</h2>
-                                                             <p>${data.basics.summary}</p>
-                                                         </div>
-                                                     `
-                                                             : ""
-                                                     }
-                                                     
-                                                     ${
-                                                         data.experience &&
-                                                         data.experience
-                                                             .length > 0
-                                                             ? `
-                                                         <div class="section">
-                                                             <h2>Expérience Professionnelle</h2>
-                                                             ${data.experience
-                                                                 .map(
-                                                                     (exp) => `
-                                                                 <div class="experience-item">
-                                                                     <h3>${
-                                                                         exp.role
-                                                                     }</h3>
-                                                                     <p style="color: #3b82f6; font-weight: bold;">${
-                                                                         exp.company
-                                                                     }</p>
-                                                                     <p style="color: #6b7280; font-size: 14px;">${
-                                                                         exp.start
-                                                                     } - ${
-                                                                         exp.end ||
-                                                                         "Présent"
-                                                                     }</p>
-                                                                     <p>${exp.achievements.join(
-                                                                         ", "
-                                                                     )}</p>
-                                                                 </div>
-                                                             `
-                                                                 )
-                                                                 .join("")}
-                                                         </div>
-                                                     `
-                                                             : ""
-                                                     }
-                                                     
-                                                     ${
-                                                         data.education &&
-                                                         data.education.length >
-                                                             0
-                                                             ? `
-                                                         <div class="section">
-                                                             <h2>Formation</h2>
-                                                             ${data.education
-                                                                 .map(
-                                                                     (edu) => `
-                                                                 <div class="experience-item">
-                                                                     <h3>${
-                                                                         edu.degree
-                                                                     }</h3>
-                                                                     <p style="color: #3b82f6; font-weight: bold;">${
-                                                                         edu.school
-                                                                     }</p>
-                                                                     <p style="color: #6b7280; font-size: 14px;">${
-                                                                         edu.start
-                                                                     } - ${
-                                                                         edu.end ||
-                                                                         "Présent"
-                                                                     }</p>
-                                                                 </div>
-                                                             `
-                                                                 )
-                                                                 .join("")}
-                                                         </div>
-                                                     `
-                                                             : ""
-                                                     }
-                                                     
-                                                     ${
-                                                         data.skills &&
-                                                         data.skills.length > 0
-                                                             ? `
-                                                         <div class="section">
-                                                             <h2>Compétences</h2>
-                                                             ${data.skills
-                                                                 .map(
-                                                                     (skill) =>
-                                                                         `<span class="skill-tag">${skill.name}</span>`
-                                                                 )
-                                                                 .join("")}
-                                                         </div>
-                                                     `
-                                                             : ""
-                                                     }
-                                                 </body>
-                                             </html>
-                                         `;
-                                        printWindow.document.write(html);
-                                        printWindow.document.close();
-                                        printWindow.print();
-                                    }
-                                }}
-                                className="px-6 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 transition-colors"
-                            >
-                                Exporter PDF
-                            </button>
+                            <PDFExporter
+                                data={data}
+                                selectedTemplate={selectedTemplate}
+                            />
                         </div>
                     )}
                 </div>
