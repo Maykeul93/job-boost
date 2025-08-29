@@ -13,11 +13,13 @@ import {
     CheckIcon,
 } from "@heroicons/react/24/outline";
 import TemplateSelector from "./TemplateSelector";
+import TemplateSelectorFinal from "./TemplateSelectorFinal";
 import BasicsForm from "./forms/BasicsForm";
 import ExperienceForm from "./forms/ExperienceForm";
 import EducationForm from "./forms/EducationForm";
 import SkillsForm from "./forms/SkillsForm";
 import PDFExporter from "./PDFExporter";
+import ResumePreview from "./ResumePreview";
 
 interface ResumeBuilderProps {
     data: ResumeData;
@@ -32,6 +34,7 @@ const steps = [
     { id: "experience", name: "Expérience", icon: BriefcaseIcon },
     { id: "education", name: "Formation", icon: AcademicCapIcon },
     { id: "skills", name: "Compétences", icon: WrenchScrewdriverIcon },
+    { id: "preview", name: "Aperçu & Export", icon: DocumentTextIcon },
 ];
 
 export default function ResumeBuilder({
@@ -96,6 +99,13 @@ export default function ResumeBuilder({
                     <SkillsForm
                         data={data.skills}
                         onChange={(value) => updateData("skills", value)}
+                    />
+                );
+            case 5:
+                return (
+                    <TemplateSelectorFinal
+                        selected={selectedTemplate}
+                        onSelect={onTemplateChange}
                     />
                 );
             default:

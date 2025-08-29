@@ -14,6 +14,7 @@ import {
 
 const navigation = [
     { name: "CV Builder", href: "/resume", icon: DocumentTextIcon },
+    { name: "Mes CV", href: "/my-resumes", icon: DocumentTextIcon },
     { name: "Lettres", href: "/cover-letters", icon: EnvelopeIcon },
     { name: "Candidatures", href: "/applications", icon: BriefcaseIcon },
 ];

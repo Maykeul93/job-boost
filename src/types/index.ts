@@ -57,6 +57,7 @@ export interface Resume {
     templateId: string;
     lang: "FR" | "EN";
     data: ResumeData;
+    createdAt: Date;
     updatedAt: Date;
 }
 
