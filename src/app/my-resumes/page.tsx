@@ -11,12 +11,15 @@ import {
     EyeIcon,
     DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
+import ResumeViewModal from "@/components/resume/ResumeViewModal";
 
 export default function MyResumesPage() {
     const { data: session } = useSession();
     const [resumes, setResumes] = useState<Resume[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [selectedResume, setSelectedResume] = useState<Resume | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (session?.user?.id) {
@@ -81,6 +84,16 @@ export default function MyResumesPage() {
         } catch (error) {
             alert("Erreur de connexion");
         }
+    };
+
+    const openResumeModal = (resume: Resume) => {
+        setSelectedResume(resume);
+        setIsModalOpen(true);
+    };
+
+    const closeResumeModal = () => {
+        setIsModalOpen(false);
+        setSelectedResume(null);
     };
 
     if (!session) {
@@ -225,7 +238,8 @@ export default function MyResumesPage() {
                         {resumes.map((resume) => (
                             <div
                                 key={resume.id}
-                                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                                onClick={() => openResumeModal(resume)}
                             >
                                 {/* Template Preview */}
                                 <div className="h-32 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
@@ -267,27 +281,40 @@ export default function MyResumesPage() {
 
                                     {/* Actions */}
                                     <div className="flex gap-2">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openResumeModal(resume);
+                                            }}
+                                            className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-green-600 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 transition-colors"
+                                        >
+                                            <EyeIcon className="w-4 h-4 mr-1" />
+                                            Voir
+                                        </button>
                                         <Link
                                             href={`/resume/edit/${resume.id}`}
+                                            onClick={(e) => e.stopPropagation()}
                                             className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 transition-colors"
                                         >
                                             <PencilIcon className="w-4 h-4 mr-1" />
                                             Modifier
                                         </Link>
                                         <button
-                                            onClick={() =>
-                                                duplicateResume(resume)
-                                            }
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                duplicateResume(resume);
+                                            }}
                                             className="flex-1 inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-purple-600 bg-purple-50 border border-purple-200 rounded-md hover:bg-purple-100 transition-colors"
                                         >
                                             <DocumentDuplicateIcon className="w-4 h-4 mr-1" />
                                             Dupliquer
                                         </button>
                                         <button
-                                            onClick={() =>
-                                                deleteResume(resume.id)
-                                            }
-                                            className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 transition-colors"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                deleteResume(resume.id);
+                                            }}
+                                            className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-red-600 bg-red-100 border border-red-200 rounded-md hover:bg-red-200 transition-colors"
                                         >
                                             <TrashIcon className="w-4 h-4" />
                                         </button>
@@ -298,6 +325,13 @@ export default function MyResumesPage() {
                     </div>
                 )}
             </div>
+
+            {/* Modal de visualisation */}
+            <ResumeViewModal
+                isOpen={isModalOpen}
+                onClose={closeResumeModal}
+                resume={selectedResume}
+            />
         </div>
     );
 }

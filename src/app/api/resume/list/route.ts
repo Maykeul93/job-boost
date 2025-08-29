@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
                 title: true,
                 templateId: true,
                 lang: true,
+                data: true,
                 createdAt: true,
                 updatedAt: true,
             },
