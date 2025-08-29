@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
     EnvelopeIcon,
     LockClosedIcon,
@@ -9,10 +10,49 @@ import {
     EyeSlashIcon,
     UserIcon,
 } from "@heroicons/react/24/outline";
+import { useAuth } from "@/hooks/useAuth";
+import { signIn } from "next-auth/react";
 
 export default function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        name: "",
+    });
+    const { login, register, isLoading, error } = useAuth();
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (isLogin) {
+            const success = await login({
+                email: formData.email,
+                password: formData.password,
+            });
+            if (success) {
+                router.push("/resume");
+            }
+        } else {
+            const success = await register({
+                email: formData.email,
+                password: formData.password,
+                name: formData.name,
+            });
+            if (success) {
+                router.push("/resume");
+            }
+        }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -61,7 +101,12 @@ export default function AuthPage() {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                    <form className="space-y-6">
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                            <p className="text-sm text-red-600">{error}</p>
+                        </div>
+                    )}
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         {!isLogin && (
                             <div>
                                 <label
@@ -76,6 +121,8 @@ export default function AuthPage() {
                                         name="name"
                                         type="text"
                                         required={!isLogin}
+                                        value={formData.name}
+                                        onChange={handleInputChange}
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                         placeholder="Votre nom complet"
                                     />
@@ -100,6 +147,8 @@ export default function AuthPage() {
                                     type="email"
                                     autoComplete="email"
                                     required
+                                    value={formData.email}
+                                    onChange={handleInputChange}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                     placeholder="votre.email@exemple.com"
                                 />
@@ -127,6 +176,8 @@ export default function AuthPage() {
                                             : "new-password"
                                     }
                                     required
+                                    value={formData.password}
+                                    onChange={handleInputChange}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm pr-10"
                                     placeholder={
                                         isLogin
@@ -183,9 +234,21 @@ export default function AuthPage() {
                         <div>
                             <button
                                 type="submit"
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                disabled={isLoading}
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isLogin ? "Se connecter" : "Créer mon compte"}
+                                {isLoading ? (
+                                    <div className="flex items-center">
+                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                        {isLogin
+                                            ? "Connexion..."
+                                            : "Création..."}
+                                    </div>
+                                ) : isLogin ? (
+                                    "Se connecter"
+                                ) : (
+                                    "Créer mon compte"
+                                )}
                             </button>
                         </div>
                     </form>
@@ -205,6 +268,7 @@ export default function AuthPage() {
                         <div className="mt-6">
                             <button
                                 type="button"
+                                onClick={() => signIn("google")}
                                 className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24">

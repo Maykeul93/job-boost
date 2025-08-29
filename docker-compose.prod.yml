@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+    postgres:
+        image: postgres:15
+        container_name: jobboost-db-prod
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        ports:
+            - "127.0.0.1:5432:5432" # Bind only to localhost
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        networks:
+            - jobboost-network
+
+    redis:
+        image: redis:7-alpine
+        container_name: jobboost-redis-prod
+        ports:
+            - "127.0.0.1:6379:6379" # Bind only to localhost
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+        networks:
+            - jobboost-network
+
+volumes:
+    postgres_data:
+        driver: local
+
+networks:
+    jobboost-network:
+        driver: bridge
+        internal: true # Isolated network

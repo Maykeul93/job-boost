@@ -5,14 +5,19 @@ services:
         image: postgres:15
         container_name: jobboost-db
         environment:
-            POSTGRES_DB: jobboost
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: password
+            POSTGRES_DB: ${POSTGRES_DB:-jobboost}
+            POSTGRES_USER: ${POSTGRES_USER:-postgres}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
         ports:
             - "5432:5432"
         volumes:
             - postgres_data:/var/lib/postgresql/data
         restart: unless-stopped
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     redis:
         image: redis:7-alpine
@@ -20,6 +25,11 @@ services:
         ports:
             - "6379:6379"
         restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
 volumes:
     postgres_data:
